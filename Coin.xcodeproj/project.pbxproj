@@ -12,6 +12,10 @@
 		805549552BBBEA120043F26C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 805549542BBBEA120043F26C /* Assets.xcassets */; };
 		805549582BBBEA120043F26C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 805549572BBBEA120043F26C /* Preview Assets.xcassets */; };
 		80EA34FA2BBBEAC10037261B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 80EA34F92BBBEAC10037261B /* .gitignore */; };
+		80EA34FF2BBBEBFB0037261B /* MarketListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA34FE2BBBEBFB0037261B /* MarketListView.swift */; };
+		80EA35012BBBEC1C0037261B /* CoinInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA35002BBBEC1C0037261B /* CoinInfo.swift */; };
+		80EA35032BBBECCC0037261B /* UpbitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA35022BBBECCC0037261B /* UpbitAPI.swift */; };
+		80EA35062BBBF2400037261B /* MarketListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA35052BBBF2400037261B /* MarketListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +25,10 @@
 		805549542BBBEA120043F26C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		805549572BBBEA120043F26C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		80EA34F92BBBEAC10037261B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		80EA34FE2BBBEBFB0037261B /* MarketListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketListView.swift; sourceTree = "<group>"; };
+		80EA35002BBBEC1C0037261B /* CoinInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinInfo.swift; sourceTree = "<group>"; };
+		80EA35022BBBECCC0037261B /* UpbitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpbitAPI.swift; sourceTree = "<group>"; };
+		80EA35052BBBF2400037261B /* MarketListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +63,10 @@
 			isa = PBXGroup;
 			children = (
 				805549502BBBEA100043F26C /* CoinApp.swift */,
-				805549522BBBEA100043F26C /* ContentView.swift */,
+				80EA35042BBBF2260037261B /* ViewModel */,
+				80EA34FD2BBBEBE70037261B /* View */,
+				80EA34FC2BBBEBC00037261B /* Network */,
+				80EA34FB2BBBEBB40037261B /* Model */,
 				805549542BBBEA120043F26C /* Assets.xcassets */,
 				805549562BBBEA120043F26C /* Preview Content */,
 			);
@@ -68,6 +79,39 @@
 				805549572BBBEA120043F26C /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		80EA34FB2BBBEBB40037261B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				80EA35002BBBEC1C0037261B /* CoinInfo.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		80EA34FC2BBBEBC00037261B /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				80EA35022BBBECCC0037261B /* UpbitAPI.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		80EA34FD2BBBEBE70037261B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				805549522BBBEA100043F26C /* ContentView.swift */,
+				80EA34FE2BBBEBFB0037261B /* MarketListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		80EA35042BBBF2260037261B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				80EA35052BBBF2400037261B /* MarketListViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,7 +185,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80EA35032BBBECCC0037261B /* UpbitAPI.swift in Sources */,
+				80EA34FF2BBBEBFB0037261B /* MarketListView.swift in Sources */,
+				80EA35062BBBF2400037261B /* MarketListViewModel.swift in Sources */,
 				805549532BBBEA100043F26C /* ContentView.swift in Sources */,
+				80EA35012BBBEC1C0037261B /* CoinInfo.swift in Sources */,
 				805549512BBBEA100043F26C /* CoinApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

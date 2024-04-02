@@ -9,27 +9,27 @@ import SwiftUI
 
 struct MarketListView: View {
    
-   @State private var coins: [CoinInfo] = []
+   @ObservedObject private var viewModel = MarketListViewModel()
    
 	var body: some View {
 	   List {
-		  ForEach(coins, id: \.self) { coin in
+		  ForEach(viewModel.coinList, id: \.self) { data in
 			 HStack {
 				VStack(alignment: .leading) {
-				   Text("\(coin.coinName)")
+				   Text("\(data.korean)")
 					  .font(.title3)
 				   
-				   Text("\(coin.coinCode)")
+				   Text("\(data.market)")
 					  .font(.subheadline)
 					  .foregroundStyle(.gray)
 				}
 				Spacer()
 				VStack(alignment: .trailing) {
-				   Text("\(coin.change)")
+				   Text("")
 					  .fontWeight(.bold)
 					  .foregroundStyle(.blue)
 				   
-				   Text("\(coin.price) 원")
+				   Text("원")
 					  .fontWeight(.light)
 					  .font(.caption)
 					  .foregroundStyle(.gray)
@@ -39,5 +39,8 @@ struct MarketListView: View {
 		  }
 	   }
 	   .listStyle(.plain)
+	   .onAppear {
+		  viewModel.fetchAllMarket()
+	   }
 	}
 }
