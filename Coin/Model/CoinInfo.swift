@@ -7,9 +7,14 @@
 
 import Foundation
 
-struct CoinInfo: Hashable {
-   var coinName: String
-   var coinCode: String
-   var change: String
-   var price: Double
+struct CoinInfo: Decodable, Hashable {
+   var market: String
+   var korean: String
+   var english: String
+   
+   enum CodingKeys: String, CodingKey {
+	  case market
+	  case korean = "korean_name"
+	  case english = "english_name"
+   }
 }
