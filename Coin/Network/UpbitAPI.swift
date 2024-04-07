@@ -7,20 +7,14 @@
 
 import Foundation
 
-enum NetworkError: Error {
-   case unknownError
-   case decodingError
-}
-
-struct UpbitAPI {
+final class UpbitAPI {
    
    private init() { }
    
-   static func fetchAllMarket<T: Decodable>(model: T.Type) async throws -> Result<T, NetworkError> {
+   static func fetchAllMarket<T: Decodable>(model: T.Type, api: APIRouter) async throws -> Result<T, NetworkError> {
 	  
-	  guard let url = URL(string: "https://api.upbit.com/v1/market/all") else { return .failure(.unknownError) }
-	  
-	  let (data, response) = try await URLSession.shared.data(from: url)
+	  let request = api.task
+	  let (data, response) = try await URLSession.shared.data(for: request)
 	  
 	  guard let httpResponse = response as? HTTPURLResponse,
 			httpResponse.statusCode == 200 else {
@@ -33,5 +27,4 @@ struct UpbitAPI {
 	  
 	  return .success(result)
    }
-   
 }
