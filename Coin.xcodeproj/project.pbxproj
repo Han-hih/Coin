@@ -50,6 +50,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		802FC54A2BC28665009E3582 /* MarketList */ = {
+			isa = PBXGroup;
+			children = (
+				80EA35122BBFE93A0037261B /* MarketListRow.swift */,
+				80EA34FE2BBBEBFB0037261B /* MarketListView.swift */,
+				80EA35052BBBF2400037261B /* MarketListViewModel.swift */,
+			);
+			path = MarketList;
+			sourceTree = "<group>";
+		};
+		802FC54B2BC28707009E3582 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				80EA35102BBD3EF90037261B /* ViewModelable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		805549442BBBEA100043F26C = {
 			isa = PBXGroup;
 			children = (
@@ -71,8 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				805549502BBBEA100043F26C /* CoinApp.swift */,
-				80EA35102BBD3EF90037261B /* ViewModelable.swift */,
-				80EA35042BBBF2260037261B /* ViewModel */,
+				802FC54B2BC28707009E3582 /* Protocols */,
 				80EA34FD2BBBEBE70037261B /* View */,
 				80EA34FC2BBBEBC00037261B /* Network */,
 				80EA34FB2BBBEBB40037261B /* Model */,
@@ -112,18 +129,9 @@
 			isa = PBXGroup;
 			children = (
 				805549522BBBEA100043F26C /* ContentView.swift */,
-				80EA34FE2BBBEBFB0037261B /* MarketListView.swift */,
-				80EA35122BBFE93A0037261B /* MarketListRow.swift */,
+				802FC54A2BC28665009E3582 /* MarketList */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		80EA35042BBBF2260037261B /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				80EA35052BBBF2400037261B /* MarketListViewModel.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -57,7 +57,7 @@ final class MarketListViewModel: ObservableObject, ViewModelable {
 		 .store(in: &cancellables)
    }
    
-  private func fetchAllMarket() {
+   func fetchAllMarket() {
 	  Task {
 		 let result = try await UpbitAPI.fetchAllMarket(model: [CoinList].self)
 		 switch result {
