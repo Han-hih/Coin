@@ -11,7 +11,7 @@ final class UpbitAPI {
    
    private init() { }
    
-   static func fetchAllMarket<T: Decodable>(model: T.Type, api: APIRouter) async throws -> Result<T, NetworkError> {
+   static func requestNetwork<T: Decodable>(model: T.Type, api: APIRouter) async throws -> Result<T, NetworkError> {
 	  
 	  let request = api.task
 	  let (data, response) = try await URLSession.shared.data(for: request)
