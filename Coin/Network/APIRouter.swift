@@ -9,7 +9,7 @@ import Foundation
 
 enum APIRouter {
    case allCoin
-   case minuteCandle(unit: Int, code: String)
+   case minuteCandle(unit: Int, code: String, count: Int)
    case dayCandle
 }
 
@@ -23,31 +23,38 @@ extension APIRouter {
 	  switch self {
 		 case .allCoin:
 			return "/market/all"
-		 case .minuteCandle(let unit, _):
+		 case .minuteCandle(let unit, _, _):
 			return "/candles/minutes/\(unit)"
 		 case .dayCandle:
 			return "/candles/days"
 	  }
    }
-
+   
    var method: String {
 	  return "GET"
    }
    
-   var headers: [String: String]? {
-	  switch self {
-		 case .allCoin, .dayCandle:
-			return nil
-		 case .minuteCandle(_, let code):
-			return ["market": code]
-	  }
-   }
-   
    var task: URLRequest {
-	  let url = baseURL.appendingPathComponent(path)
+	  var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
+	  switch self {
+		 case .minuteCandle(_, let code, let count):
+			components.queryItems = [
+			   URLQueryItem(name: "market", value: code),
+			   URLQueryItem(name: "count", value: "\(count)")
+			]
+		 default:
+			break
+	  }
+	  
+	  components.path.append(path)
+	  
+	  guard let url = components.url else {
+		 fatalError("Invalid URL")
+	  }
+	  
+	  // URLRequest 생성
 	  var request = URLRequest(url: url)
-	  request.httpMethod = method
-	  request.allHTTPHeaderFields = headers
+	  print(request)
 	  return request
    }
 }
