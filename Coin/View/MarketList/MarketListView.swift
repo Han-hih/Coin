@@ -18,28 +18,33 @@ struct MarketListView: View {
 			   VStack {
 				  SearchBarView(searchText: "")
 				  List {
-					 ForEach(ticker, id: \.self) { ticker in
-						NavigationLink(destination: ChartView(coinName: ticker.name, coinCode: ticker.code)) {
-						   MarketListRow(
-							  coinName: ticker.name,
-							  coinCode: ticker.code,
-							  rate: ticker.rate,
-							  price: ticker.price
-						   )
+					 Section {
+						ForEach(ticker, id: \.self) { ticker in
+						   NavigationLink(destination: ChartView(coinName: ticker.name, coinCode: ticker.code)) {
+							  MarketListRow(
+								 coinName: ticker.name,
+								 coinCode: ticker.code,
+								 rate: ticker.rate,
+								 price: ticker.price
+							  )
+						   }
 						}
+						.listRowSeparator(.hidden)
+					 } header: {
+						MarketListHeaderView()
 					 }
-					 .listRowSeparator(.hidden)
 				  }
 				  .listStyle(.plain)
 				  .task {
 					 viewModel.fetchAllMarket()
 				  }
 			   }
+			   .onDisappear {
+				  print("뷰 사라짐")
+				  WebSocketManager.shared.closeWebSocket()
+			   }
 			}
-			.onDisappear {
-			   print("뷰 사라짐")
-			   WebSocketManager.shared.closeWebSocket()
-			}
+			
 	  }
    }
 }
