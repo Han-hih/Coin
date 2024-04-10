@@ -45,11 +45,11 @@ final class MarketListViewModel: ObservableObject, ViewModelable {
 		 .sink { [weak self] ticker in
 			guard let self else { return }
 			self.dataSubject.send(ticker)
-			print("🔥", ticker)
+//			print("🔥", ticker)
 			
 			if let index = self.coinInfo.firstIndex(where: { $0.code == ticker.code }) {
-			   self.coinInfo[index].price = priceChangeValue(value: ticker.tradePrice)
-			   self.coinInfo[index].rate = rateChangeValue(value: ticker.changeRate, raise: ticker.change)
+			   self.coinInfo[index].price = ticker.tradePrice.priceChangeValue()
+			   self.coinInfo[index].rate = ticker.changeRate.rateChangeValue(raise: ticker.change)
 			  
 			   self.updateState()
 			}
@@ -59,7 +59,7 @@ final class MarketListViewModel: ObservableObject, ViewModelable {
    
    func fetchAllMarket() {
 	  Task {
-		 let result = try await UpbitAPI.fetchAllMarket(model: [CoinList].self)
+		 let result = try await UpbitAPI.requestNetwork(model: [CoinList].self, api: .allCoin)
 		 switch result {
 			case .success(let response):
 			   coinList = response
@@ -79,37 +79,6 @@ final class MarketListViewModel: ObservableObject, ViewModelable {
    
    private func updateState() {
 	  state = .coinPrice(coinInfo)
-   }
-   
-  private func rateChangeValue(value: Double, raise: String) -> String {
-	  var changedValue = ""
-	  if raise == "RISE" {
-		 changedValue = "+" + String(format: "%.2f", value * 100) + "%"
-	  } else if raise == "FALL" {
-		 changedValue = "-" + String(format: "%.2f", value * 100) + "%"
-	  } else {
-		 changedValue = "0.0%"
-	  }
-	  return changedValue
-   }
-   
-  private func priceChangeValue(value: Double) -> String {
-	  let numberFormatter = NumberFormatter()
-	  
-	  if value.description.contains("e") {
-		 return String(format: "%.8f", value)
-	  }
-	  
-	  if value >= 1 {
-		 numberFormatter.numberStyle = .decimal
-		 return numberFormatter.string(from: value as NSNumber) ?? "0.0"
-	  }
-	  
-	  if value > 0 && value < 1 {
-		 return String(value)
-	  }
-	  
-	  return "No Value"
    }
    
    deinit {
