@@ -14,20 +14,31 @@ struct MarketListView: View {
    var body: some View {
 	  switch viewModel.state {
 		 case .coinPrice(let ticker):
-			List {
-			   ForEach(ticker, id: \.self) { ticker in
-					 MarketListRow(
-						coinName: ticker.name,
-						coinCode: ticker.code,
-						rate: ticker.rate,
-						price: ticker.price
-					 )
+			NavigationView {
+			   VStack {
+				  SearchBarView(searchText: "")
+				  List {
+					 ForEach(ticker, id: \.self) { ticker in
+						NavigationLink(destination: ChartView(coinName: ticker.name, coinCode: ticker.code)) {
+						   MarketListRow(
+							  coinName: ticker.name,
+							  coinCode: ticker.code,
+							  rate: ticker.rate,
+							  price: ticker.price
+						   )
+						}
+					 }
+					 .listRowSeparator(.hidden)
 				  }
-			   .listRowSeparator(.hidden)
+				  .listStyle(.plain)
+				  .task {
+					 viewModel.fetchAllMarket()
+				  }
+			   }
 			}
-			.listStyle(.plain)
-			.task {
-			   viewModel.fetchAllMarket()
+			.onDisappear {
+			   print("뷰 사라짐")
+			   WebSocketManager.shared.closeWebSocket()
 			}
 	  }
    }
