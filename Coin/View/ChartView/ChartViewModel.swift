@@ -8,13 +8,16 @@
 import Foundation
 import Combine
 
-final class ChartViewModel: ObservableObject, ViewModelable {
-  
-   @Published var state: State
+class ChartViewModel: ViewModelable {
    
-   var coinCode = ""
-   var chartData = [MinuteCandle]()
+   var coinCode: String
    
+   init(coinCode: String) {
+	  self.coinCode = coinCode
+   }
+   
+   @Published var state: State = .none
+   @Published var chartData: [MinuteCandle] = []
    
    private var cancellables = Set<AnyCancellable>()
    
@@ -23,6 +26,7 @@ final class ChartViewModel: ObservableObject, ViewModelable {
    }
    
    enum State {
+	  case none
 	  case chart([MinuteCandle])
    }
    
@@ -30,33 +34,50 @@ final class ChartViewModel: ObservableObject, ViewModelable {
 	  switch action {
 		 case .chartOnAppear:
 			chartNetworking()
+			   .receive(on: DispatchQueue.main)
+			   .sink { completion in
+				  switch completion {
+					 case .failure(let error):
+						print(error.localizedDescription)
+					 case .finished:
+						print("finished")
+				  }
+			   } receiveValue: { [weak self] (items) in
+				  guard let self else {return}
+				  self.chartData = items
+				  self.updateState()
+			   }
+			   .store(in: &cancellables)
 	  }
-	  
    }
    
-   func chartNetworking() {
-	  print("🔥", coinCode)
-	  Task {
-		 let result = try await UpbitAPI.requestNetwork(
-			model: [MinuteCandle].self,
-			api: .minuteCandle(
-			   unit: 3,
-			   code: coinCode,
-			   count: 200
+   
+   func chartNetworking() -> Future<[MinuteCandle], Error> {
+	  Future { [weak self] (promixe) in
+		 guard let self else {return}
+		 
+		 Task {
+			let result = try await UpbitAPI.requestNetwork(
+			   model: [MinuteCandle].self,
+			   api: .minuteCandle(
+				  unit: 3,
+				  code: self.coinCode,
+				  count: 100
+			   )
 			)
-		 )
-		 switch result {
-			case .success(let response):
-			   print(response)
-			   chartData = response
-			case .failure(let error):
-			   print(error)
+			switch result {
+			   case .success(let response):
+				  promixe(.success(response))
+				  
+			   case .failure(let error):
+				  promixe(.failure(error))
+			}
 		 }
 	  }
    }
    
    
-   init() {
-	  state = .chart([MinuteCandle(market: "", kstTime: "", openingPrice: 0.0, highPrice: 0.0, lowPrice: 0.0, tradePrice: 0.0)])
+   private func updateState() {
+		 self.state = .chart(chartData)
    }
 }

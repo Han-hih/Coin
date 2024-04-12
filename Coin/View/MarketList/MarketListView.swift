@@ -20,7 +20,8 @@ struct MarketListView: View {
 				  List {
 					 Section {
 						ForEach(ticker, id: \.self) { ticker in
-						   NavigationLink(destination: ChartView(coinName: ticker.name, coinCode: ticker.code)) {
+						   NavigationLink(destination: ChartView(coinName: ticker.name, coinCode: ticker.code,
+							  viewModel: ChartViewModel(coinCode: ticker.code))) {
 							  MarketListRow(
 								 coinName: ticker.name,
 								 coinCode: ticker.code,
