@@ -2,54 +2,45 @@
 //  ChartSection.swift
 //  Coin
 //
-//  Created by 황인호 on 4/7/24.
+//  Created by 황인호 on 4/13/24.
 //
 
 import SwiftUI
 import Charts
 
 struct ChartSection: View {
-   var name: String
-   var code: String
-   var price: String
-   var rate: String
-   var comparedPrice: String
+   var chartData: [MinuteCandle] = []
    
-   // x축 time: kstTime, y축 price: tradePrice
-   var data: [MinuteCandle]
-
-   var body: some View {
-	  GroupBox {
-		 HStack {
-			VStack(alignment: .leading) {
-			  LazyHStack {
-				  Text("\(name)")
-					 .font(.title2)
-					 .fontWeight(.semibold)
-				  
-				  Text("(\(code))")
-			   }
-			   
-			   Text("\(price)")
-				  .font(.title)
-				  .fontWeight(.semibold)
-			   
-			   Text("전날보다 \(comparedPrice)원(\(rate))")
-			}
-			Spacer()
-		 }
-		 
-		 Chart(data, id: \.kstTime) {
-			LineMark(
-			   x: .value("시간", $0.kstTime),
-			   y: .value("가격", $0.tradePrice)
-			)
-		 }
-		 .chartYScale(domain: (data.first?.lowPrice ?? 0.0)...(data.first?.highPrice ?? 0.0))
-	  }
-   }
-}
-
-#Preview {
-   ChartSection(name: "테슬라", code: "BTC-ABC", price: "123,123원", rate: "+2.8%", comparedPrice: "1,023", data: ChartViewModel().chartData)
+    var body: some View {
+	   Chart {
+		  ForEach(chartData) { item in
+			 LineMark(
+				x: .value("시간", item.kstTime, unit: .minute),
+				y: .value("가격", item.tradePrice)
+			 )
+			 .foregroundStyle(.green)
+			 
+			 RectangleMark(
+				x: .value("시간", item.kstTime),
+				yStart: .value("최저가", item.lowPrice),
+				yEnd: .value("최대값", item.highPrice),
+				width: 1
+			 )
+			 .foregroundStyle(item.openingPrice < item.tradePrice ? .red : .blue)
+			 
+			 RectangleMark(
+				x: .value("시간", item.kstTime),
+				yStart: .value("최저가", item.openingPrice),
+				yEnd: .value("최대값", item.tradePrice),
+				width: 7
+			 )
+			 .foregroundStyle(item.openingPrice < item.tradePrice ? .red : .blue)
+		  }
+	   }
+	   .chartXScale(domain: .automatic(includesZero: false))
+	   .chartYScale(domain: .automatic(includesZero: false))
+	   .background(.white)
+	   .chartScrollableAxes(.horizontal)
+	   .safeAreaPadding(.horizontal)
+    }
 }

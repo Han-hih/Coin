@@ -8,38 +8,46 @@
 import SwiftUI
 import Charts
 
-//struct ChartData {
-//   
-//}
-
 struct ChartView: View {
-   @State var coinName = ""
-   @State var coinCode = ""
+   var coinName: String
+   var coinCode: String
    
-   @StateObject var viewModel = ChartViewModel()
+   @StateObject private var viewModel: ChartViewModel
+   
+   init(coinName: String, coinCode: String, viewModel: ChartViewModel) {
+	  self.coinName = coinName
+	  self.coinCode = coinCode
+	  _viewModel = StateObject(wrappedValue: viewModel)
+   }
    
    // x축 기간(시간), y축 가격
    var body: some View {
-	  ChartSection(
-		 name: coinName,
-		 code: coinCode,
-		 price: "",
-		 rate: "",
-		 comparedPrice: "",
-		 data: viewModel.chartData
-	  )
-	  
-	  
-		 .task {
-			print(coinCode)
-			viewModel.coinCode = coinCode
-			viewModel.chartNetworking()
+		 HStack {
+			VStack(alignment: .leading) {
+			   HStack {
+				  Text("\(coinName)")
+					 .font(.title2)
+					 .fontWeight(.semibold)
+				  Text("(\(coinCode))")
+			   }
+			}
+			Spacer()
 		 }
+		 .safeAreaPadding(.horizontal)
+		 
+		 //차트뷰
+	  ChartSection(chartData: viewModel.chartData)
+		 .onAppear {
+			viewModel.action(.chartOnAppear)
+		 }
+		 .navigationBarBackButtonHidden()
+		 .toolbar {
+			ToolbarItem(placement: .topBarLeading) {
+			   HStack {
+				  dismissBackButton()
+			   }
+			}
+		 }
+	  }
    }
-}
-   
 
-
-#Preview {
-   ChartView()
-}
