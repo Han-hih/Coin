@@ -8,9 +8,9 @@
 import Foundation
 import RealmSwift
 
-final class LikeCoinTable: Object {
+final class LikeCoinTable: Object, Identifiable {
    @Persisted var coinName: String
-   @Persisted var coinCode: String
+   @Persisted (primaryKey: true) var coinCode: String
    
    convenience init(coinName: String, coinCode: String) {
 	  self.init()
