@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct dismissBackButton: View {
+struct DismissBackButton: View {
    @Environment(\.dismiss) private var dismiss
    
    var body: some View {
@@ -15,11 +15,8 @@ struct dismissBackButton: View {
 		 print("돌아가기")
 		 dismiss()
 	  } label: {
-		 HStack {
-			Image(systemName: "chevron.backward")
-			   .foregroundColor(.black)
-			
-		 }
+		 Image(systemName: "chevron.backward")
+			.foregroundColor(.black)
 	  }
    }
 }
