@@ -38,4 +38,32 @@ extension Double {
 	   }
 	   return changedValue
 	}
+   
+   func changePriceValue(raise: String) -> String {
+	  var changedValue = ""
+	   let numberFormatter = NumberFormatter()
+	   
+	  if self.description.contains("e") {
+		  changedValue = String(format: "%.8f", self)
+	   }
+	   
+	   if self >= 1 {
+		  numberFormatter.numberStyle = .decimal
+		  changedValue = numberFormatter.string(from: self as NSNumber) ?? "0.0"
+	   }
+	   
+	   if self > 0 && self < 1 {
+		  return String(changedValue)
+	   }
+	  
+	  if raise == "RISE" {
+		 changedValue = "+" + changedValue
+	  } else if raise == "FALL" {
+		 changedValue = "-" + changedValue
+	  } else {
+		 changedValue = "0.0"
+	  }
+	  
+	   return changedValue
+	}
 }
