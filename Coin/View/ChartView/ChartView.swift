@@ -11,34 +11,18 @@ import Charts
 struct ChartView: View {
    var coinName: String
    var coinCode: String
-   var coinPrice: String
    
    @StateObject private var viewModel: ChartViewModel
    
-   init(coinName: String, coinCode: String, coinPrice: String, viewModel: ChartViewModel) {
+   init(coinName: String, coinCode: String, viewModel: ChartViewModel) {
 	  self.coinName = coinName
 	  self.coinCode = coinCode
-	  self.coinPrice = coinPrice
 	  _viewModel = StateObject(wrappedValue: viewModel)
    }
    
    // x축 기간(시간), y축 가격
    var body: some View {
-		 HStack {
-			VStack(alignment: .leading) {
-			   HStack {
-				  Text("\(coinName)")
-					 .font(.title2)
-					 .fontWeight(.semibold)
-				  Text("(\(coinCode))")
-			   }
-			   Text("\(coinPrice)원")
-				  .font(.title)
-				  .fontWeight(.semibold)
-			}
-			Spacer()
-		 }
-		 .safeAreaPadding(.horizontal)
+	  CoinInfoSection(chartInfo: viewModel.chartInfo, coinName: coinName, coinCode: coinCode)
 		 
 		 //차트뷰
 	  ChartSection(chartData: viewModel.chartData)
