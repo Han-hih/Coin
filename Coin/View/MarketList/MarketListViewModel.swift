@@ -43,7 +43,7 @@ final class MarketListViewModel: ViewModelable {
    }
    
    init() {
-	  state = .coinPrice([CoinInfo(name: "", code: "", rate: "", price: "")])
+	  state = .coinPrice([CoinInfo(name: "", code: "", rate: "", price: 0.0)])
 	  WebSocketManager.shared.tickerSubject
 		 .receive(on: DispatchQueue.main)
 		 .sink { [weak self] ticker in
@@ -52,7 +52,7 @@ final class MarketListViewModel: ViewModelable {
 //						print("🔥", ticker)
 			
 			if let index = self.coinInfo.firstIndex(where: { $0.code == ticker.code }) {
-			   self.coinInfo[index].price = ticker.tradePrice.priceChangeValue()
+			   self.coinInfo[index].price = ticker.tradePrice
 			   self.coinInfo[index].rate = ticker.changeRate.rateChangeValue(raise: ticker.change)
 			   
 			   self.updateState()
@@ -72,8 +72,8 @@ final class MarketListViewModel: ViewModelable {
 			   realTimeInfo.removeAll()
 			   for code in 0..<response.count {
 				  marketCode.append(response[code].market)
-				  coinInfo.append(CoinInfo(name: response[code].korean, code: response[code].market, rate: "", price: ""))
-				  realTimeInfo.append(CoinInfo(name: response[code].korean, code: response[code].market, rate: "", price: ""))
+				  coinInfo.append(CoinInfo(name: response[code].korean, code: response[code].market, rate: "", price: 0.0))
+				  realTimeInfo.append(CoinInfo(name: response[code].korean, code: response[code].market, rate: "", price: 0.0))
 			   }
 			   WebSocketManager.shared.openWebSocket()
 			   WebSocketManager.shared.send(codes: marketCode)
@@ -96,7 +96,7 @@ final class MarketListViewModel: ViewModelable {
 			   name: filteredData[index].name,
 			   code: filteredData[index].code,
 			   rate: "",
-			   price: ""
+			   price: 0.0
 			)
 		 )
 		 

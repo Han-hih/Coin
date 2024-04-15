@@ -25,15 +25,14 @@ struct MarketListView: View {
 							  destination: ChartView(
 								 coinName: ticker.name,
 								 coinCode: ticker.code,
-								 coinPrice: ticker.price,
-								 viewModel: ChartViewModel(coinCode: ticker.code)
+								 viewModel: ChartViewModel(coinCode: ticker.code, coinName: ticker.name)
 							  )
 						   ) {
 							  MarketListRow(
 								 coinName: ticker.name,
 								 coinCode: ticker.code,
 								 rate: ticker.rate,
-								 price: ticker.price
+								 price: ticker.price.priceChangeValue()
 							  )
 						   }
 						}
@@ -46,10 +45,6 @@ struct MarketListView: View {
 				  .task {
 					 viewModel.action(.marketViewTrigger)
 				  }
-			   }
-			   .onDisappear {
-				  print("뷰 사라짐")
-				  WebSocketManager.shared.closeWebSocket()
 			   }
 			}
 	  }
