@@ -9,14 +9,15 @@ import SwiftUI
 
 struct MarketListView: View {
    
-   @StateObject private var viewModel = MarketListViewModel()
+   @ObservedObject private var viewModel = MarketListViewModel()
+   @State var searchText: String = ""
    
    var body: some View {
 	  switch viewModel.state {
 		 case .coinPrice(let ticker):
 			NavigationView {
 			   VStack {
-				  SearchBarView(searchText: "")
+				  SearchBarView(searchText: searchText, viewModel: viewModel)
 				  List {
 					 Section {
 						ForEach(ticker, id: \.self) { ticker in
@@ -43,7 +44,7 @@ struct MarketListView: View {
 				  }
 				  .listStyle(.plain)
 				  .task {
-					 viewModel.fetchAllMarket()
+					 viewModel.action(.marketViewTrigger)
 				  }
 			   }
 			   .onDisappear {
@@ -51,7 +52,6 @@ struct MarketListView: View {
 				  WebSocketManager.shared.closeWebSocket()
 			   }
 			}
-			
 	  }
    }
 }

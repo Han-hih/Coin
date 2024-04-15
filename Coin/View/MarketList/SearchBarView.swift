@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SearchBarView: View {
-   
-   @State var searchText: String
+   @State var searchText: String = ""
+   @StateObject var viewModel: MarketListViewModel
    
    var body: some View {
 	  HStack {
@@ -18,6 +18,14 @@ struct SearchBarView: View {
 			   searchText.isEmpty ?
 			   Color.gray : Color.black)
 		 TextField("코인명 / 심볼 검색", text: $searchText)
+			.onChange(of: searchText) {
+			   if searchText.isEmpty {
+				  print("🥹", searchText)
+				  viewModel.action(.marketViewTrigger)
+			   } else {
+				  viewModel.action(.search(text: searchText))
+			   }
+			}
 			.autocorrectionDisabled(true)
 			.foregroundColor(Color.black)
 			.overlay(
@@ -42,15 +50,11 @@ struct SearchBarView: View {
 			   color: Color.black.opacity(0.3),
 			   radius: 10, x: 0, y: 0)
 	  )
-	  .padding()
+	  	  .padding()
    }
 }
 extension UIApplication {
 	func endEditing() {
 		sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 	}
-}
-
-#Preview {
-   SearchBarView(searchText: "")
 }
