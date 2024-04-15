@@ -23,5 +23,5 @@ struct CoinInfo: Decodable, Hashable {
    var name: String
    var code: String
    var rate: String
-   var price: String
+   var price: Double
 }
