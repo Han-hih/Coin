@@ -11,6 +11,7 @@ enum APIRouter {
    case allCoin
    case minuteCandle(unit: Int, code: String, count: Int)
    case dayCandle
+   case orderBook(code: String)
 }
 
 extension APIRouter {
@@ -27,6 +28,8 @@ extension APIRouter {
 			return "/candles/minutes/\(unit)"
 		 case .dayCandle:
 			return "/candles/days"
+		 case .orderBook(let code):
+			return "/orderbook"
 	  }
    }
    
@@ -41,6 +44,10 @@ extension APIRouter {
 			components.queryItems = [
 			   URLQueryItem(name: "market", value: code),
 			   URLQueryItem(name: "count", value: "\(count)")
+			]
+		 case .orderBook(code: let code):
+			components.queryItems = [
+			URLQueryItem(name: "markets", value: code)
 			]
 		 default:
 			break
