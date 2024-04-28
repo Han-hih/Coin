@@ -27,4 +27,16 @@ extension String {
 	  }
 	   return stirngDate
    }
+   
+   func changePriceValue(raise: String) -> String {
+	  
+	  if raise == "RISE" {
+		 return "+" + self
+	  } else if raise == "FALL" {
+		 return "-" + self
+	  } else {
+		 return "0.0"
+	  }
+	}
+
 }

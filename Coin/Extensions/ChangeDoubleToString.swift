@@ -10,21 +10,19 @@ import Foundation
 extension Double {
    func priceChangeValue() -> String {
 	   let numberFormatter = NumberFormatter()
+	  numberFormatter.maximumFractionDigits = 1
 	   
-	  if self.description.contains("e") {
-		  return String(format: "%.8f", self)
+	  if self < 1 {
+		 return numberFormatter.string(from: self * 100000000 as NSNumber) ?? ""
 	   }
 	   
-	   if self >= 1 {
+	   if self >= 1000 {
 		  numberFormatter.numberStyle = .decimal
+		  numberFormatter.maximumFractionDigits = 0
 		  return numberFormatter.string(from: self as NSNumber) ?? "0.0"
 	   }
 	   
-	   if self > 0 && self < 1 {
-		  return String(self)
-	   }
-	   
-	   return "No Value"
+	  return String(format: "%.1f", self)
 	}
    
    func rateChangeValue(raise: String) -> String {
@@ -39,31 +37,4 @@ extension Double {
 	   return changedValue
 	}
    
-   func changePriceValue(raise: String) -> String {
-	  var changedValue = ""
-	   let numberFormatter = NumberFormatter()
-	   
-	  if self.description.contains("e") {
-		  changedValue = String(format: "%.8f", self)
-	   }
-	   
-	   if self >= 1 {
-		  numberFormatter.numberStyle = .decimal
-		  changedValue = numberFormatter.string(from: self as NSNumber) ?? "0.0"
-	   }
-	   
-	   if self > 0 && self < 1 {
-		  return String(changedValue)
-	   }
-	  
-	  if raise == "RISE" {
-		 changedValue = "+" + changedValue
-	  } else if raise == "FALL" {
-		 changedValue = "-" + changedValue
-	  } else {
-		 changedValue = "0.0"
-	  }
-	  
-	   return changedValue
-	}
 }
